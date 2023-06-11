@@ -6,7 +6,7 @@ const app = express()
 app.use(express.json())
 app.use(cochesRoute)
 app.use(makesRoute)
-app.set('view', './src/views') // modificar la ruta de las vistas
+app.set('views', './src/views') // modificar la ruta de las vistas
 
 execute()
 app.listen(3000, () => {
