@@ -32,7 +32,7 @@ const addCoche = async (req, res) => {
   const { make, model, version, price, image } = req.body
   const makeObj = await MakeModel.findById({ _id: make })
   if (!makeObj) return res.status(400).json({ error: 'Uyyyy no mano, lo que viene siendo esa marcar no la tengo registrada' })
-  const coche = new MakeModel({ make: makeObj, model, version, price, image })
+  const coche = new CochesModel({ make: makeObj, model, version, price, image })
   coche.save()
     .then((result) => {
       res.json({ message: result })
@@ -45,7 +45,7 @@ const addCoche = async (req, res) => {
 const deleteCoche = (req, res) => {
   const { id } = req.params
 
-  CochesModel.findByIdAndUpdate(id)
+  CochesModel.findByIdAndDelete(id)
     .then((result) => {
       res.json({ message: result })
     })
