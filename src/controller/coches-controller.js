@@ -6,12 +6,11 @@ const showCoches = (req, res) => {
 
   consult.exec()
     .then((coches) => {
-      res.json(coches)
-      // res.render('index', { coches })
+      // res.json(coches)
+      res.render('index', { coches })
     })
     .catch((error) => {
-      // eslint-disable-next-line quote-props
-      res.json({ 'message': error })
+      res.json({ message: error })
     })
 }
 

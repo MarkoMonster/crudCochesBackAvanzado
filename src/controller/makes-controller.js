@@ -5,8 +5,8 @@ const showMakes = (req, res) => {
 
   consulta.exec()
     .then((marcas) => {
-      res.json(marcas)
-      // res.render('showMakes', { marcas })
+      // bres.json(marcas)
+      res.render('showMakes', { marcas })
     })
     .catch((error) => {
       res.json({ message: error })
