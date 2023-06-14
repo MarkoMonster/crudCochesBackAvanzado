@@ -1,4 +1,4 @@
-import UserModel from '../model/user-model.js'
+import UserModel, { compairPassword, encryptPassword } from '../model/user-model.js'
 
 const showUsers = (req, res) => {
   const consult = UserModel.find({})
@@ -23,9 +23,16 @@ const showUser = (req, res) => {
     })
 }
 
-const addUser = (req, res) => {
-  const { user, mail, password, profileImage } = req.body
-  const userObj = new UserModel({ user, mail, password, profileImage })
+const addUser = async (req, res) => {
+  const { userName, email, password, name, lastName, rol } = req.body
+  const userObj = new UserModel({
+    userName,
+    email,
+    password: await encryptPassword(password),
+    name,
+    lastName,
+    rol
+  })
   userObj.save()
     .then((result) => {
       res.json({ message: result })
@@ -47,4 +54,17 @@ const deleteUser = (req, res) => {
     })
 }
 
-export { showUsers, showUser, addUser, deleteUser }
+const login = async (req, res) => {
+  // buscar usuario en la BD
+  const userFound = await UserModel.findOne({ email: req.body.email })
+  if (!userFound) return res.status(401).json({ message: 'Usuario no encontrado' })
+
+  // comparar el password
+  const passwordCompare = await compairPassword(req.body.password, userFound.password)
+  console.log('retornó: ' + passwordCompare)
+  if (!passwordCompare) return res.status(401).json({ message: 'invalid password' })
+
+  res.json({ message: `Ahhh perro, login éxitoso. Bienvenido ${userFound.name}` })
+}
+
+export { showUsers, showUser, addUser, deleteUser, login }
