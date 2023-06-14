@@ -1,4 +1,6 @@
+import { SECRET } from '../config/config.js'
 import UserModel, { compairPassword, encryptPassword } from '../model/user-model.js'
+import Jwt from 'jsonwebtoken'
 
 const showUsers = (req, res) => {
   const consult = UserModel.find({})
@@ -61,10 +63,14 @@ const login = async (req, res) => {
 
   // comparar el password
   const passwordCompare = await compairPassword(req.body.password, userFound.password)
-  console.log('retornó: ' + passwordCompare)
   if (!passwordCompare) return res.status(401).json({ message: 'invalid password' })
 
-  res.json({ message: `Ahhh perro, login éxitoso. Bienvenido ${userFound.name}` })
+  // Generar un token
+  const token = Jwt.sign({ id: userFound._id }, SECRET, {
+    expiresIn: 20000
+  })
+
+  res.json({ token })
 }
 
 export { showUsers, showUser, addUser, deleteUser, login }
