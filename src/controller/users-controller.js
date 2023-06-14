@@ -35,13 +35,11 @@ const addUser = async (req, res) => {
     lastName,
     rol
   })
-  userObj.save()
-    .then((result) => {
-      res.json({ message: result })
-    })
-    .catch((error) => {
-      res.json({ message: error })
-    })
+  const saveUser = await userObj.save()
+  const token = Jwt.sign({ id: saveUser._id }, SECRET, {
+    expiresIn: 500000
+  })
+  res.status(200).json({ token })
 }
 
 const deleteUser = (req, res) => {

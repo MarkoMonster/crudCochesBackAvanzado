@@ -4,7 +4,7 @@ import verificar from '../middleware/middleware.js'
 const router = Router()
 
 router.get('/', showCoches)
-router.get('/showCoche', showCoche)
+router.get('/showCoche', verificar, showCoche)
 router.post('/addCoche', verificar, addCoche)
 router.delete('/deleteCoche/:id', deleteCoche)
 router.delete('/deteCocheV2/:id', deleteCochesV2)

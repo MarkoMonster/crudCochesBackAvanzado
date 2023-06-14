@@ -7,6 +7,7 @@ app.use(express.json())
 app.use(cochesRoute)
 app.use(makesRoute)
 app.use(usersRoute)
+app.set('view engine', 'ejs')
 app.set('views', './src/views') // modificar la ruta de las vistas
 
 execute()
